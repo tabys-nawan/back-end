@@ -1,0 +1,432 @@
+{% extends "main.html" %}
+
+{% block title %}Profile - {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+  <!-- Sidebar Area -->
+  <aside class="profile-sidebar">
+    <div class="profile-card">
+      <div class="avatar-container">
+      <a class="" href="/edit_profile">
+        {% if user.avatar %}
+        <img src="{{ url_for('static', filename='uploads/avatars/' + user.avatar) }}" alt="Avatar" class="profile-avatar">
+        {% else %}
+        <img src="{{ url_for('static', filename='uploads/avatars/default.png') }}" alt="Avatar" class="profile-avatar">
+        {% endif %}
+        <div class="avatar-overlay">
+          <i class="fas fa-camera"></i>
+        </div>
+      </a>
+      </div>
+      
+      <h2 class="profile-username">{{ user.username }}</h2>
+      <p class="profile-email">{{ user.email }}</p>
+      
+      <div class="profile-stats">
+        <div class="stat-item">
+          <span class="stat-number">{{ user.posts|length }}</span>
+          <span class="stat-label">Posts</span>
+        </div>
+      </div>
+      
+      <div class="profile-actions">
+        <a href="/edit_profile" class="btn btn-edit">
+          <i class="fas fa-user-edit"></i> Edit Profile
+        </a>
+        <a href="/logout" class="btn btn-logout">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="profile-main">
+    <div class="profile-header">
+      <h1>Your Posts</h1>
+      <a href="{{ url_for('create_post') }}" class="btn btn-create">
+        <i class="fas fa-plus"></i> New Post
+      </a>
+    </div>
+    
+    <div class="posts-container">
+      {% for post in user.posts %}
+      <article class="post-card">
+        <div class="post-header">
+          <h2>{{ post.title }}</h2>
+          <div class="post-actions">
+            <a href="/edit_post/{{ post.id }}" class="btn-action btn-edit">
+              <i class="fas fa-edit"></i>
+            </a>
+            <a href="/delete_post/{{ post.id }}" class="btn-action btn-delete" onclick="return confirm('Are you sure you want to delete this post?');">
+              <i class="fas fa-trash"></i>
+            </a>
+          </div>
+        </div>
+        <div class="post-content">
+          <p>{{ post.content }}</p>
+        </div>
+        <div class="post-footer">
+          <span class="post-date">{{ post.created_at.strftime('%B %d, %Y') }}</span>
+          <div class="post-stats">
+            <span><i class="fas fa-heart"></i> 42</span>
+          </div>
+        </div>
+      </article>
+      {% else %}
+      <div class="empty-state">
+        <img src="{{ url_for('static', filename='images/empty-post.svg') }}" alt="No posts yet">
+        <h3>No Posts Yet</h3>
+        <p>You haven't written any posts. Start sharing your thoughts!</p>
+        <a href="{{ url_for('create_post') }}" class="btn btn-create">
+          <i class="fas fa-plus"></i> Create Your First Post
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+</div>
+
+<style>
+  :root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --accent-color: #4895ef;
+    --danger-color: #f72585;
+    --success-color: #4cc9f0;
+    --light-bg: #f8f9fa;
+    --dark-text: #212529;
+    --light-text: #6c757d;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+  }
+
+  /* Base Layout */
+  .profile-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  /* Sidebar Styles */
+  .profile-sidebar {
+    position: sticky;
+    top: 1rem;
+    align-self: start;
+  }
+
+  .profile-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .avatar-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+  }
+
+  .avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition);
+    color: white;
+    font-size: 1.5rem;
+  }
+
+  .avatar-container:hover .avatar-overlay {
+    opacity: 1;
+  }
+
+  .avatar-container:hover .profile-avatar {
+    transform: scale(1.05);
+  }
+
+  .profile-username {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--dark-text);
+  }
+
+  .profile-email {
+    color: var(--light-text);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .profile-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 1.5rem 0;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-number {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--light-text);
+  }
+
+  .profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1rem;
+    border-radius: 50px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+  }
+
+  .btn-edit {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+  }
+
+  .btn-edit:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+  }
+
+  .btn-logout {
+    background: white;
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+  }
+
+  .btn-logout:hover {
+    background: var(--danger-color);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .profile-bio {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+  }
+
+  .profile-bio h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--dark-text);
+  }
+
+  .profile-bio p {
+    color: var(--light-text);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  /* Main Content Area */
+  .profile-main {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+  }
+
+  .profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .profile-header h1 {
+    font-size: 1.8rem;
+    color: var(--dark-text);
+  }
+
+  .btn-create {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .btn-create:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+  }
+
+  /* Post Cards */
+  .posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .post-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    transition: var(--transition);
+  }
+
+  .post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .post-header h2 {
+    font-size: 1.3rem;
+    color: var(--dark-text);
+    margin: 0;
+  }
+
+  .post-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .btn-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+  }
+
+  .btn-edit {
+    background: rgba(67, 97, 238, 0.1);
+    color: var(--primary-color);
+  }
+
+  .btn-edit:hover {
+    background: var(--primary-color);
+    color: white;
+  }
+
+  .btn-delete {
+    background: rgba(247, 37, 133, 0.1);
+    color: var(--danger-color);
+  }
+
+  .btn-delete:hover {
+    background: var(--danger-color);
+    color: white;
+  }
+
+  .post-content {
+    color: var(--dark-text);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--light-text);
+  }
+
+  .post-stats {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .post-stats span {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 3rem 0;
+  }
+
+  .empty-state img {
+    width: 200px;
+    margin-bottom: 1.5rem;
+  }
+
+  .empty-state h3 {
+    font-size: 1.5rem;
+    color: var(--dark-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state p {
+    color: var(--light-text);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .profile-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .profile-sidebar {
+      position: static;
+    }
+    
+    .profile-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  }
+</style>
+{% endblock %}

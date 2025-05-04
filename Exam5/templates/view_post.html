@@ -1,0 +1,79 @@
+{% extends "main.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4" style="font-weight: 600; color: #333;">{{ post.title }}</h2>
+    <p>{{ post.content }}</p>
+    <hr>
+    <h4 class="mb-3" style="color: #555;">Comments</h4>
+    
+    {% for comment in comments %}
+    <div class="card mb-3 p-3 shadow-sm border-0 rounded" style="background-color: #f9f9f9;">
+        <div class="d-flex align-items-start">
+            <img src="{{ url_for('static', filename='uploads/avatars/' + (comment.author.avatar or 'default.png')) }}"
+                 alt="Avatar"
+                 class="rounded-circle me-3"
+                 style="width: 50px; height: 50px; object-fit: cover; transition: transform 0.3s;">
+            <div class="flex-grow-1 position-relative">
+            
+                {% if user and (comment.author.id == user.id or post.author.id == user.id) %}
+                    <a href="{{ url_for('delete_comment', comment_id=comment.id) }}"
+                       class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
+                       onclick="return confirm('Are you sure you want to delete this comment?');">
+                       &times;
+                    </a>
+                {% endif %}
+
+                <p class="mb-1"><strong>{{ comment.author.username }}</strong></p>
+                <p class="mb-0">
+                    {% if not comment.is_approved %}
+                        <span class="badge bg-warning text-dark">Pending Approval</span><br>
+                    {% endif %}
+                    {{ comment.content }}
+                </p>
+
+                {% if user and user.id == post.author.id and not comment.is_approved %}
+                <div class="mt-2 d-flex gap-2">
+                    <a href="{{ url_for('approve_comment', comment_id=comment.id) }}"
+                       class="btn btn-sm btn-success">
+                        Approve
+                    </a>
+                    <a href="{{ url_for('reject_comment', comment_id=comment.id) }}"
+                       class="btn btn-sm btn-outline-danger"
+                       onclick="return confirm('Reject and delete this comment?');">
+                        Reject
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p class="text-muted">No comments yet. Be the first to comment!</p>
+    {% endfor %}
+
+
+
+    <a href="{{ url_for('index') }}" class="btn btn-sm btn-outline-secondary mb-3">← Back to the posts</a>
+</div>
+
+<!-- Custom CSS for Avatar Hover and Comment Styling -->
+<style>
+    .rounded-circle:hover {
+        transform: scale(1.1);
+    }
+
+    .card:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .btn-danger:hover {
+        background-color: #e55353;
+        border-color: #cc4646;
+    }
+</style>
+{% endblock %}

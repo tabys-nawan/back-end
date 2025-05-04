@@ -1,0 +1,58 @@
+{% extends "main.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg p-4" style="max-width: 450px; width: 100%; border-radius: 15px;">
+        <h2 class="mb-4 text-center" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 600; color: #4b4f56;">Create an Account</h2>
+
+        <form method="post" action="/register">
+            <div class="mb-3">
+                <label for="username" class="form-label" style="font-weight: 500;">Username</label>
+                <input name="username" type="text" class="form-control shadow-sm" id="username" required style="border-radius: 10px; transition: all 0.3s ease;">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label" style="font-weight: 500;">Email</label>
+                <input name="email" type="email" class="form-control shadow-sm" id="email" required style="border-radius: 10px; transition: all 0.3s ease;">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label" style="font-weight: 500;">Password</label>
+                <input name="password" type="password" class="form-control shadow-sm" id="password" required style="border-radius: 10px; transition: all 0.3s ease;">
+            </div>
+            <div class="mb-3">
+                <label for="confirm" class="form-label" style="font-weight: 500;">Confirm Password</label>
+                <input name="confirm" type="password" class="form-control shadow-sm" id="confirm" required style="border-radius: 10px; transition: all 0.3s ease;">
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-success shadow-sm" style="border-radius: 12px; transition: transform 0.3s ease;">
+                    Register
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-3 text-center" style="color: #555;">
+            <small>Already have an account? <a href="/login" style="color: #007bff;">Login</a></small>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Input Focus and Button Hover Effects -->
+<style>
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+    }
+
+    .btn-success:hover {
+        transform: translateY(-5px);
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+    .card {
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}

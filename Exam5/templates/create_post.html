@@ -1,0 +1,52 @@
+{% extends "main.html" %}
+{% block title %}Create Post{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white fw-semibold">
+           Create a New Post
+        </div>
+        <div class="card-body bg-light">
+          <form method="POST">
+            <div class="mb-4">
+              <label for="title" class="form-label fw-medium">Post Title</label>
+              <input
+                type="text"
+                class="form-control form-control-lg rounded-3"
+                id="title"
+                name="title"
+                placeholder="Enter a captivating title..."
+                required
+              >
+            </div>
+
+            <div class="mb-4">
+              <label for="content" class="form-label fw-medium">Post Content</label>
+              <textarea
+                class="form-control rounded-3"
+                id="content"
+                name="content"
+                rows="8"
+                placeholder="Write something meaningful..."
+                required
+              ></textarea>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <a href="{{ url_for('index') }}" class="btn btn-outline-secondary rounded-pill">
+                ❌ Cancel
+              </a>
+              <button type="submit" class="btn btn-primary rounded-pill px-4">
+                 Publish
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

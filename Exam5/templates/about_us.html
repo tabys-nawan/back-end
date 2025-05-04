@@ -1,0 +1,163 @@
+{% extends "main.html" %}
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row align-items-center">
+    <!-- Image Column -->
+    <div class="col-md-6 mb-4 mb-md-0">
+      <img src="{{ url_for('static', filename='about.jpg') }}"
+           class="img-fluid rounded shadow-sm w-100 hover-zoom"
+           data-aos="fade-right" data-aos-duration="800">
+    </div>
+
+    <!-- Text Content -->
+    <div class="col-md-6">
+      <div class="p-4 bg-light rounded shadow-sm hover-float" 
+           data-aos="fade-left" data-aos-duration="800" 
+           data-aos-delay="200">
+        <h2 class="text-dark fw-bold mb-3">Welcome to BlogHub</h2>
+        
+        <p class="text-muted mb-3 fade-in">
+          <strong class="text-gradient">BlogHub</strong> is a modern space for all lovers of life actions, blogging, and comfort. We've combined everything you need for vibrant sharing with your life:
+        </p>
+        
+        <ul class="list-unstyled text-muted ps-3 mb-3">
+          <li class="list-item-animate">Minimalized styles and high response</li>
+          <li class="list-item-animate" style="--delay: 0.2s">Unique and fast design</li>
+          <li class="list-item-animate" style="--delay: 0.4s">Secure login system</li>
+          <li class="list-item-animate" style="--delay: 0.6s">Share with you family and friends</li>
+        </ul>
+        
+        <p class="text-muted mb-3 fade-in" style="--delay: 0.8s">
+          A creative platform for sharing ideas and connecting with like-minded people.
+        </p>
+        
+        <h5 class="text-primary fw-semibold mb-2 typewriter">We Offer:</h5>
+        
+        <ul class="text-muted ps-3">
+          <li class="list-item-animate" style="--delay: 1s">Beautiful design</li>
+          <li class="list-item-animate" style="--delay: 1.2s">Security</li>
+          <li class="list-item-animate" style="--delay: 1.4s">Comfortable UI</li>
+        </ul>
+        
+        <p class="mt-4 text-dark pulse" style="animation-delay: 1.6s">
+          New web app with greate future - BlogHub
+        </p>
+        
+        <div class="mt-4">
+          <button class="btn btn-primary btn-glow px-4 py-2">Join Now</button>
+          <button class="btn btn-outline-primary btn-hover-grow ms-3 px-4 py-2">Virtual Tour</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add particle background effect -->
+<div id="particles-js"></div>
+
+<style>
+  /* Basic animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Gradient text */
+  .text-gradient {
+    background: linear-gradient(45deg, #4285f4, #34a853, #fbbc05, #ea4335);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 300% 300%;
+    animation: gradientShift 8s ease infinite;
+  }
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Hover zoom effect */
+  .hover-zoom {
+    transition: transform 0.3s ease;
+  }
+  
+  .hover-zoom:hover {
+    transform: scale(1.03);
+  }
+  
+  /* Hover float effect */
+  .hover-float {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-float:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+  
+  /* Button glow effect */
+  .btn-glow {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-glow:hover {
+    box-shadow: 0 0 15px rgba(66, 133, 244, 0.6);
+  }
+  
+  /* Button hover grow */
+  .btn-hover-grow {
+    transition: transform 0.2s ease;
+  }
+  
+  .btn-hover-grow:hover {
+    transform: scale(1.05);
+  }
+  
+  /* List item animation */
+  .list-item-animate {
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: var(--delay, 0s);
+  }
+  
+  /* Typewriter effect */
+  .typewriter {
+    overflow: hidden;
+    border-right: 3px solid #4285f4;
+    white-space: nowrap;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+  
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #4285f4 }
+  }
+  
+  /* Pulse effect */
+  .pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+{% endblock %}
